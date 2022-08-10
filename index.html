@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans&display=swap" rel="stylesheet">
+    <title>JSDrum Ki</title>
+
+    <style>
+
+        body{
+            font-family: 'Nunito Sans', sans-serif;
+            background: radial-gradient(circle, rgba(238,174,202,1) 0%, rgba(148,187,233,1) 100%);
+            /* background: url('https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80'); */
+            margin: 0;
+            padding: 0;
+            background-position: center;
+            background-size: cover;
+            background-repeat: no-repeat;
+            /* filter: blur(4px);
+            -webkit-filter: blur(4px); */
+            height: 100vh;
+        }
+
+        .keys{
+            height: 100%;
+            align-items: center;
+            display: flex;
+            justify-content: center;
+        }
+        .key{
+            text-align: center;
+            display: flex;
+            flex-flow: column;
+            justify-content: center;
+            /* padding: 15px; */
+            margin: 15px;
+            transition: all 0.1s;
+            cursor: pointer;
+                background: rgba( 255, 255, 255, 0.35 );
+            box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
+            backdrop-filter: blur( 8.0px );
+            -webkit-backdrop-filter: blur( 8.0px );
+            border-radius: 10px;
+            border: 2px solid rgba( 255, 255, 255, 0.18 );
+            height: 120px;
+            width: 120px;
+        }
+        kbd{
+            font-weight: 800;
+            font-size: 24px;
+        }
+        .key span{
+            display: block;
+            margin-top: 10px;
+            font-weight:500;
+            color: #fff;
+        }
+
+
+        .playing{
+            transform: scale(1.1);
+            /* border-color: #FF5F1F; */
+            /* box-shadow: 0 0 10px #fffbd5; */
+            background: rgba( 148, 187, 233, 0.30 );
+            box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
+            backdrop-filter: blur( 4.0px );
+            -webkit-backdrop-filter: blur( 4.0px );
+            border-radius: 10px;
+            border: 2px solid #eeaeca;
+        }
+
+        footer{
+            position: absolute;
+            bottom: 12px;
+            margin-left: auto;
+            margin-right: auto;
+            left: 0;
+            right: 0;
+            }
+            footer .row{
+                display: flex;
+                justify-content: center;
+                text-align: center
+                ;
+
+            }
+
+            .links{
+                margin: auto 4px;
+            }
+    </style>
+</head>
+<body>
+    <div class="keys">
+        <div data-key="65" class="key">
+            <kbd>A</kbd>
+            <span class="sound">clap</span>
+        </div>
+        <div data-key="83" class="key">
+            <kbd>S</kbd>
+            <span class="sound">hihat</span>
+        </div>
+        <div data-key="68" class="key">
+            <kbd>D</kbd>
+            <span class="sound">kick</span>
+        </div>
+        <div data-key="70" class="key">
+            <kbd>F</kbd>
+            <span class="sound">openhat</span>
+        </div>
+        <div data-key="71" class="key">
+            <kbd>G</kbd>
+            <span class="sound">boom</span>
+        </div>
+        <div data-key="72" class="key">
+            <kbd>H</kbd>
+            <span class="sound">ride</span>
+        </div>
+        <div data-key="74" class="key">
+            <kbd>J</kbd>
+            <span class="sound">snare</span>
+        </div>
+        <div data-key="75" class="key">
+            <kbd>K</kbd>
+            <span class="sound">tom</span>
+        </div>
+        <div data-key="76" class="key">
+            <kbd>L</kbd>
+            <span class="sound">tink</span>
+        </div>
+    </div>
+
+    <footer>
+        <div class="row">
+            <h3 class="mb-0">Connect with me</h3>
+        </div>
+        <div class="row">
+            
+            <div class="links">
+                <a href="https://fueler.io/aquib" target="_blank" rel="follow"><img src="https://fueler.io/images/fueler/main//favicon/favicon-32x32.png" alt=""
+                        width="26px"></a>
+            </div>
+            <div class="links">
+                <a href="https://twitter.com/aquibj0" target="_blank" rel="follow"><img src="/pictures/twitter.png" alt="" width="36px"></a>
+            </div>
+
+            
+         
+        </div>
+    </footer>
+
+
+
+    <audio data-key="65" src="audio/clap.wav"></audio>
+    <audio data-key="83" src="audio/hihat.wav"></audio>
+    <audio data-key="68" src="audio/kick.wav"></audio>
+    <audio data-key="70" src="audio/openhat.wav"></audio>
+    <audio data-key="71" src="audio/boom.wav"></audio>
+    <audio data-key="72" src="audio/ride.wav"></audio>
+    <audio data-key="74" src="audio/snare.wav"></audio>
+    <audio data-key="75" src="audio/tom.wav"></audio>
+    <audio data-key="76" src="audio/tink.wav"></audio>
+
+
+    <script type="text/javascript">
+
+
+        function playSound(e){
+            const audio = document.querySelector("audio[data-key=" + CSS.escape(e.keyCode) + "]");
+            const key = document.querySelector(".key[data-key=" + CSS.escape(e.keyCode) + "]");
+            if (!audio) return; //stop the dunciotn form running all together
+            audio.currentTime = 0; // rewind to the start
+            audio.play();
+            key.classList.add('playing') // add this class to key
+        }
+
+        function playSoundonTap(e){
+            var a = document.get
+            // alert(this)
+
+
+            console.log(this)
+        }
+
+        
+
+
+        function removeTransition(e){
+
+            if(e.propertyName !== 'transform') return; // skip if it's not a transform event
+            console.log(this);
+            this.classList.remove('playing');
+            console.log(e.propertyName)
+        }
+
+        const keys = document.querySelectorAll('.key');
+        keys.forEach(key => key.addEventListener('transitionend', removeTransition));
+
+        
+        window.addEventListener('keydown', playSound)
+        // window.addEventListener('click', playSoundonTap)
+
+    </script>
+</body>
+</html>
